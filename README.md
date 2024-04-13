@@ -7,7 +7,7 @@ The team's project is comprised of 2 application.
 1. A frontend UI built written in Typescript, using the React framework
 2. A backend API written in Python using the Flask framework.
 
-You'll find 2 folders, one named `frontend` and one named `backend`, where each application's source code is maintained. Your job is to use the team's [existing documentation](#frontend-development-notes) and create CI/CD pipelines to meet the teams' needs.
+In this repo, you'll find 2 folders, one named `frontend` and one named `backend`, where each application's source code is maintained. Your job is to use the team's [existing documentation](./frontend/frontend-development-notes) and create CI/CD pipelines to meet the teams' needs.
 
 ## Deliverables
 
@@ -232,7 +232,7 @@ FAIL_LINT=true npm run lint
 For local development without docker, the developers use the following commands:
 
 ```bash
-cd starter/frontend
+cd frontend
 
 # Install dependencies
 npm ci
@@ -260,7 +260,7 @@ docker run --name mp-frontend -p 3000:3000 -d mp-frontend]
 In order to build the Kubernetes manifests correctly, the team uses `kustomize` in the following way:
 
 ```bash
-cd starter/frontend/k8s
+cd frontend/k8s
 # Make sure you're kubeconfig is configured for the EKS cluster, i.e.
 # aws eks update-kubeconfig
 
@@ -357,7 +357,7 @@ pipenv run lint-fail
 For local development without docker, the developers use the following commands to build and run the backend application:
 
 ```bash
-cd starter/backend
+cd backend
 
 # Install dependencies
 pipenv install
@@ -369,7 +369,7 @@ pipenv run serve
 For production deployments, the team uses the following commands to build and run the Docker image.
 
 ```bash
-cd starter/backend
+cd backend
 
 # Build the image
 docker build --tag mp-backend:latest .
@@ -395,7 +395,7 @@ docker stop
 In order to build the Kubernetes manifests correctly, the team uses `kustomize` in the following way:
 
 ```bash
-cd starter/backend/k8s
+cd backend/k8s
 # Make sure you're kubeconfig is configured for the EKS cluster, i.e.
 # aws eks update-kubeconfig
 

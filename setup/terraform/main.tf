@@ -275,7 +275,7 @@ resource "aws_codebuild_project" "codebuild" {
 
   source {
     type            = "GITHUB"
-    location        = "https://github.com/your-org/your-repo"
+    location        = "https://github.com/tranghaviet/udacity-devops-ci-cd-pipeline-project"
     git_clone_depth = 1
     buildspec       = "buildspec.yml"
   }
