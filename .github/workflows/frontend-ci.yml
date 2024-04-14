@@ -10,6 +10,9 @@ on:
     branches: [ main ]
     paths:
       - 'frontend/**'
+defaults:
+  run:
+    working-directory: ./frontend
 
 # Jobs defined in the workflow
 jobs:
@@ -42,15 +45,12 @@ jobs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
-        working-directory: ./frontend
         run: npm list
 
       - name: Install the dependencies.
-        working-directory: ./frontend
         run: npm i
 
       - name: Run the linter.
-        working-directory: ./frontend
         run: npm run lint
 
   testing-job:
@@ -79,15 +79,12 @@ jobs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
-        working-directory: ./frontend
         run: npm list
 
       - name: Install the dependencies.
-        working-directory: ./frontend
         run: npm i
 
       - name: Run the tests.
-        working-directory: ./frontend
         run: npm run test
 
   build-job:
@@ -115,13 +112,10 @@ jobs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
-        working-directory: ./frontend
         run: npm list
 
       - name: Install the dependencies.
-        working-directory: ./frontend
         run: npm i
 
       - name: Run build
-        working-directory: ./frontend
         run: npm run build
