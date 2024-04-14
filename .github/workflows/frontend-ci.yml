@@ -18,9 +18,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        # with:
-        #   sparse-checkout: |
-        #     frontend
+        with:
+          sparse-checkout: |
+            frontend
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -42,13 +42,15 @@ jobs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
+        working-directory: ./frontend
         run: npm list
 
       - name: Install the dependencies.
-        # working-directory: ./frontend
+        working-directory: ./frontend
         run: npm i
 
       - name: Run the linter.
+        working-directory: ./frontend
         run: npm run lint
 
   testing-job:
@@ -77,12 +79,15 @@ jobs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
+        working-directory: ./frontend
         run: npm list
 
       - name: Install the dependencies.
+        working-directory: ./frontend
         run: npm i
 
       - name: Run the tests.
+        working-directory: ./frontend
         run: npm run test
 
   build-job:
@@ -110,10 +115,13 @@ jobs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
+        working-directory: ./frontend
         run: npm list
 
       - name: Install the dependencies.
+        working-directory: ./frontend
         run: npm i
 
       - name: Run build
+        working-directory: ./frontend
         run: npm run build
