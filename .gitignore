@@ -1,2 +1,4 @@
 .infracost
 .history
+.terraform
+.terraform.lock.hcl
