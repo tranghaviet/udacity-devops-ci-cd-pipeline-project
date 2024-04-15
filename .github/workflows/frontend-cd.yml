@@ -23,7 +23,8 @@ env:
 # Jobs defined in the workflow
 jobs:
   ci-workflow:
-    uses: .github/workflows/frontend-ci.yml
+    working-directory: ./github/workflows
+    uses: ./frontend-ci.yml
 
   deploy-job:
     needs: [build-job]
