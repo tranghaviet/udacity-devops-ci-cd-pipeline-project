@@ -1,12 +1,6 @@
 name: 'Node.js setup'
 description: 'Checks out code, sets up Node.js, caches and installs npm dependencies'
 
-inputs:
-  node-version:
-    description: 'Node.js version'
-    required: true
-    default: '18'
-
 runs:
   using: "composite"
   steps:
@@ -19,7 +13,7 @@ runs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ inputs.node-version }}
+        node-version: 18
 
     - name: Cache node modules
       id: cache-npm # use later to check if cache hit
