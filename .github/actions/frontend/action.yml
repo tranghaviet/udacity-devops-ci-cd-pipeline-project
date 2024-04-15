@@ -8,6 +8,7 @@ runs:
       uses: actions/checkout@v4
       with:
         sparse-checkout: |
+          .github
           frontend
 
     - name: Set up Node.js
