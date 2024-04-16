@@ -31,5 +31,5 @@ runs:
 
     - name: Install the dependencies.
       working-directory: ./frontend
-      run: npm i
+      run: npm ci
       shell: bash

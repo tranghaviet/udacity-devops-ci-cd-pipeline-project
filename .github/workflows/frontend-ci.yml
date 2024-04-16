@@ -13,6 +13,8 @@ on:
     paths:
       - 'frontend/**'
       - '.github/actions/frontend/**'
+env:
+  ECR_REPOSITORY: frontend
 
 defaults:
   run:

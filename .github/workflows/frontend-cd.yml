@@ -10,6 +10,7 @@ on:
     branches: [ main ]
     paths:
       - 'frontend/**'
+      - '.github/actions/frontend/**'
 
 defaults:
   run:
@@ -54,7 +55,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       # run: docker push ${{ env.ECR_REPOSITORY }}:${{ steps.commit.outputs.short }}
-      run: docker push ${{ECR_REGISTRY}}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+      run: docker push ${{ ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
     - name: Set up Kubectl
       uses: azure/setup-kubectl@v3
@@ -73,7 +74,7 @@ jobs:
     - name: Set the image tag to the newer version
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: kubectl kustomize edit set image frontend=${{ECR_REGISTRY}}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+      run: kubectl kustomize edit set image frontend=${{ ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
     - name: Apply the manifests to the cluster
       run: |
