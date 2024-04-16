@@ -5,12 +5,18 @@ on:
     branches: [ main ]
     paths:
       - 'backend/**'
+      - '.github/actions/backend/**'
+      - '.github/workflows/backend*'
   workflow_dispatch:
 
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: backend
   K8S_CLUSTER: cluster
+
+defaults:
+  run:
+    working-directory: ./backend
 
 jobs:
   ci-workflow:
@@ -21,7 +27,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          .github
+          backend
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2

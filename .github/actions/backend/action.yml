@@ -1,0 +1,31 @@
+name: 'Backend setup'
+description: 'Setup python, caches and installs pip dependencies'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      id: setup_python
+      with:
+        python-version: '3.10'
+        cache: 'pipenv'
+    - run: echo '${{ steps.setup_python.outputs.cache-hit }}' # true if cache-hit occurred on the primary key
+      shell: bash
+
+    - name: Install pipenv
+      run: pip install pipenv
+      shell: bash
+
+    # - name: Cache Pipenv dependencies
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: ~/.local/share/virtualenvs
+    #     key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-pipenv-
+
+    - name: Install Dependencies
+      # run: pipenv install --system --deploy
+      run: pipenv install --deploy
+      shell: bash
