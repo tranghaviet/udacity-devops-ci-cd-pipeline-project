@@ -11,6 +11,7 @@ on:
     paths:
       - 'frontend/**'
       - '.github/actions/frontend/**'
+      - '.github/workflows/frontend*'
 
 defaults:
   run:
