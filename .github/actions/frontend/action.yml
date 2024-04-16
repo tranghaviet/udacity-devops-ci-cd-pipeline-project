@@ -31,5 +31,5 @@ runs:
 
     - name: Install the dependencies.
       working-directory: ./frontend
-      run: npm ci
+      run: npm ci --loglevel=error --no-fund
       shell: bash
