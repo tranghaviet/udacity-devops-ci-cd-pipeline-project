@@ -22,7 +22,13 @@ jobs:
   linting-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Node.js setup
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            frontend
+      - name: Setup frontend
         uses: ./.github/actions/frontend
       - name: Run the linter.
         run: npm run lint
@@ -30,7 +36,13 @@ jobs:
   testing-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Node.js setup
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            frontend
+      - name: Setup frontend
         uses: ./.github/actions/frontend
       - name: Run the tests.
         run: npm run test
