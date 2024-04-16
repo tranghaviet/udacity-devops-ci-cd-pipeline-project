@@ -25,9 +25,11 @@ runs:
     - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
       name: List the state of node modules
       continue-on-error: true
+      working-directory: ./frontend
       run: npm list
       shell: bash
 
     - name: Install the dependencies.
+      working-directory: ./frontend
       run: npm i
       shell: bash
