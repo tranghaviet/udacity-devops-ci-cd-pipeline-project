@@ -24,10 +24,10 @@ env:
 # Jobs defined in the workflow
 jobs:
   ci-workflow:
-    uses: .github/workflows/frontend-ci.yml
+    uses: ./.github/workflows/frontend-ci.yml
 
   deploy-job:
-    needs: [build-job]
+    needs: [ci-workflow]
     runs-on: ubuntu-latest
     environment:
       name: staging
