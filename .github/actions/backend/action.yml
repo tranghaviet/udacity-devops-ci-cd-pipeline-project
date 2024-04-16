@@ -10,10 +10,11 @@ runs:
       with:
         python-version: '3.10'
         cache: 'pipenv'
-    - run: echo '${{ steps.setup_python.outputs.cache-hit }}' # true if cache-hit occurred on the primary key
+    - run: echo 'Cache hit ${{ steps.setup_python.outputs.cache-hit }}' # true if cache-hit occurred on the primary key
       shell: bash
 
     - name: Install pipenv
+      working-directory: backend
       run: pip install pipenv
       shell: bash
 
@@ -26,6 +27,7 @@ runs:
     #       ${{ runner.os }}-pipenv-
 
     - name: Install Dependencies
+      working-directory: backend
       # run: pipenv install --system --deploy
       run: pipenv install --deploy
       shell: bash
