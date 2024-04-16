@@ -1,0 +1,62 @@
+name: Frontend CI
+
+# Triggers for the workflow
+on:
+  # Manual trigger using the workflow_dispatch event
+  workflow_dispatch:
+  # Run on workflow called
+  workflow_call:
+
+  # Automatic trigger on pull request events targeting the main branch
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+      - '.github/actions/frontend/**'
+env:
+  ECR_REPOSITORY: frontend
+
+defaults:
+  run:
+    working-directory: ./frontend
+
+jobs:
+  linting-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            frontend
+      - name: Setup frontend
+        uses: ./.github/actions/frontend
+      - name: Run the linter.
+        run: npm run lint
+
+  testing-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            frontend
+      - name: Setup frontend
+        uses: ./.github/actions/frontend
+      - name: Run the tests.
+        run: npm run test
+
+  build-job:
+    needs: [linting-job, testing-job]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            frontend
+      - name: Build Docker image
+        run: docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 -t ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
