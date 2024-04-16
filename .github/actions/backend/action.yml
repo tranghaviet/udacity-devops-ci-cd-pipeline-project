@@ -28,6 +28,6 @@ runs:
 
     - name: Install Dependencies
       working-directory: backend
-      # run: pipenv install --system --deploy
-      run: pipenv install --deploy
+      run: pipenv install --system --deploy
+      # run: pipenv install --deploy
       shell: bash
