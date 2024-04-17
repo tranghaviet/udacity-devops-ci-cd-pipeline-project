@@ -65,8 +65,8 @@ jobs:
       - name: Save Docker image
         run: docker save ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} | gzip > frontend.tar.gz
 
-      - name: Upload Docker image
-        uses: actions/upload-artifact@v2
+      - name: Cache Docker image
+        uses: actions/cache@v3
         with:
-          name: frontend-image
           path: frontend.tar.gz
+          key: ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
