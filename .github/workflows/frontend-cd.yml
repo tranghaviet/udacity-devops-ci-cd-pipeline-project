@@ -56,9 +56,12 @@ jobs:
     - name: Restore Docker image from cache
       id: restore-image
       uses: actions/cache/restore@v3
+      env:
+        cache-name: cache-frontend-image
       with:
-        path: frontend.tar.gz
-        key: frontend-${{ github.sha }}
+        path: ./frontend.tar.gz
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.sha }}
+        restore-key: ${{ runner.os }}-${{ env.cache-name }}-
 
     - name: Load or build Docker image
       run: |

@@ -67,6 +67,12 @@ jobs:
 
       - name: Cache Docker image
         uses: actions/cache/save@v3
+        env:
+          cache-name: cache-frontend-image
         with:
-          path: frontend.tar.gz
-          key: frontend-${{ github.sha }}
+          path: ./frontend.tar.gz
+          # key: frontend-${{ github.sha }}
+          # key: ${{ runner.os }}-${{ env.cache-name }}
+          # restore-key: ${{ github.sha }}
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.sha }}
+          restore-key: ${{ runner.os }}-${{ env.cache-name }}-
