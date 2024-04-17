@@ -11,7 +11,8 @@ on:
     paths:
       - 'frontend/**'
       - '.github/actions/frontend/**'
-      - '.github/workflows/frontend*'
+      - '.github/workflows/frontend-ci.yml'
+      - '.github/workflows/frontend-cd.yml'
 
 defaults:
   run:
@@ -51,6 +52,24 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Restore Docker image from cache
+      id: restore-image
+      uses: actions/cache/restore@v3
+      env:
+        cache-name: cache-frontend-image
+      with:
+        path: /tmp/frontend.tar.gz
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.sha }}
+
+    - name: Load or build Docker image
+      run: |
+        if [ ${{ steps.restore-image.outputs.cache-hit != 'true' }} ]; then
+          echo "Docker image not found, building..."
+          docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 -t ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
+        else
+          gunzip -c /tmp/frontend.tar.gz | docker load
+        fi
 
     - name: Push Docker image to Amazon ECR
       env:
