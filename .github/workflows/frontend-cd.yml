@@ -55,7 +55,7 @@ jobs:
 
     - name: Restore Docker image from cache
       id: restore-image
-      uses: actions/cache@v3
+      uses: actions/cache/restore@v3
       with:
         path: frontend.tar.gz
         key: ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
