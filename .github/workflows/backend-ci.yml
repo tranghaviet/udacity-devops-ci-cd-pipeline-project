@@ -1,0 +1,80 @@
+name: Backend CI
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/actions/backend/**'
+      - '.github/workflows/backend*'
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  ECR_REPOSITORY: backend
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./backend
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          .github
+          backend
+
+    - name: Setup backend
+      uses: ./.github/actions/backend
+
+    - name: Lint
+      run: pipenv run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          .github
+          backend
+
+    - name: Setup backend
+      uses: ./.github/actions/backend
+
+    - name: Test
+      run: pipenv run test
+
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          backend
+
+    - name: Build Docker image
+      run: docker build -t ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
+
+    - run: echo ${{ github.event_name }}
+
+    - name: Save Docker image
+      if: ${{ contains(fromJSON('["push", "workflow_call"]'), github.event_name) }}
+      run: docker save ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} | gzip > /tmp/backend.tar.gz
+
+    - name: Cache Docker image
+      if: ${{ contains(fromJSON('["push", "workflow_call"]'), github.event_name) }}
+      uses: actions/cache/save@v3
+      env:
+        cache-name: cache-backend-image
+      with:
+        path: /tmp/backend.tar.gz
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.sha }}
