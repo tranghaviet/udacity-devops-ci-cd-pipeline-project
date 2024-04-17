@@ -58,7 +58,7 @@ jobs:
       uses: actions/cache/restore@v3
       with:
         path: frontend.tar.gz
-        key: ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+        key: frontend-${{ github.sha }}
 
     - name: Load or build Docker image
       run: |

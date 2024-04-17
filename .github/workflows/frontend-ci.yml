@@ -69,4 +69,4 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: frontend.tar.gz
-          key: ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          key: frontend-${{ github.sha }}
