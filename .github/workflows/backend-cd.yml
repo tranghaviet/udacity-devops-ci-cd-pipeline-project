@@ -20,7 +20,7 @@ defaults:
 
 jobs:
   ci-workflow:
-    uses: .github/workflows/backend-ci.yml
+    uses: ./.github/workflows/backend-ci.yml
 
   deploy:
     needs: [ci-workflow]
