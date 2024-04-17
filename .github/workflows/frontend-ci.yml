@@ -60,3 +60,12 @@ jobs:
             frontend
       - name: Build Docker image
         run: docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 -t ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
+
+      - name: Save Docker image
+        run: docker save ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} | gzip > frontend.tar.gz
+
+      - name: Upload Docker image
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-image
+          path: frontend.tar.gz

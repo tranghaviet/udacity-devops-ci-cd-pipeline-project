@@ -52,6 +52,14 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
+    - name: Download Docker image
+      uses: actions/download-artifact@v2
+      with:
+        name: frontend-image
+
+    - name: Load Docker image
+      run: gunzip -c frontend.tar.gz | docker load
+
     - name: Push Docker image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
