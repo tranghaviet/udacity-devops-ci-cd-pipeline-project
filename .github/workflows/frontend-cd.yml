@@ -93,7 +93,9 @@ jobs:
       run: kubectl kustomize edit set image frontend=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
     - name: Apply the manifests to the cluster
+      working-directory: ./frontend
       run: |
+        pwd
         kubectl kustomize k8s | kubectl apply -f -
       # run: kubectl apply -k k8s might fall into compatibility issues that will be hard to detect
 

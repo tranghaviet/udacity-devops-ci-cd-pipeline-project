@@ -63,14 +63,14 @@ jobs:
         run: docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 -t ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
 
       - name: Save Docker image
+        if: ${{ github.event_name == 'workflow_call' }}
         run: docker save ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} | gzip > /tmp/frontend.tar.gz
 
       - name: Cache Docker image
+        if: ${{ github.event_name == 'workflow_call' }}
         uses: actions/cache/save@v3
         env:
           cache-name: cache-frontend-image
         with:
           path: /tmp/frontend.tar.gz
-          # key: frontend-${{ github.sha }}
-          # key: ${{ runner.os }}-${{ env.cache-name }}
           key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.sha }}
