@@ -59,9 +59,8 @@ jobs:
       env:
         cache-name: cache-frontend-image
       with:
-        path: ./frontend.tar.gz
+        path: /tmp/frontend.tar.gz
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.sha }}
-        restore-key: ${{ runner.os }}-${{ env.cache-name }}-
 
     - name: Load or build Docker image
       run: |
@@ -69,7 +68,7 @@ jobs:
           echo "Docker image not found, building..."
           docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 -t ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
         else
-          gunzip -c frontend.tar.gz | docker load
+          gunzip -c /tmp/frontend.tar.gz | docker load
         fi
 
     - name: Push Docker image to Amazon ECR
